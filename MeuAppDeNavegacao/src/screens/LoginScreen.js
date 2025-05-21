@@ -1,44 +1,95 @@
+
 import React from 'react';
-import { View, Text, Button, StyleSheet, Dimensions } from 'react-native';
+import { useState } from 'react';
+import {View, Text, Button, StyleSheet, Dimensions, TextInput} from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen ({navigation}){
+        const [usuario, setUsuario] = useState('');
+        const [senha, setSenha]= useState('');
+        const Login = () => {
+            if (!usuario || !senha) {
+                alert('Erro. Preencha todos os campos.');
+                return;
+            }
+        
+            if (usuario !== 'admin@gmail.com') {
+                alert('Erro. Usuário inválido.');
+                return;
+            }
+        
+            if (senha !== '1234') {
+                alert('Erro. Senha incorreta.');
+                return;
+            }
+
+            if (senha !== '1234' && usuario !=='admin@gmail.com'){
+                alert("Usuário e senha incorretos");
+                return;
+            }
+        
+            navigation.navigate('Home');
+        };
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Login Screen</Text>
-                <TextInput
+    <View style={styles.container}>
+        
+
+            <Text style={styles.title}>Login</Text>
+            <View style={styles.formContainer}>
+            <TextInput
                 style={styles.input}
-                placeholder="Nome do Usuário"
-                keyboardType="numeric"
-                value={user}
-                onChangeText={setUser}
+                placeholder="Usuário"
+                keyboardType="email-address"
+                value={usuario}
+                onChangeText={setUsuario}
                 />
+
+            <TextInput
+                style={styles.input}
+                placeholder="Senha"
+                keyboardType="numeric" value={senha}
+                onChangeText={setSenha}
+            />
             <View style={styles.buttonContainer}>
                 <Button
-                title="Login"
-                onPress={() => navigation.navigate('Home')}
+                    title="Login"
+                    onPress={Login}
                 />
-            </View>
-        </View>
-    );
+                </View>
+          </View>
+    </View>
+    )
 };
 
-const styles = StyleSheet.create({
+const styles= StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f0f8ff', // Cor de fundo da tela
+        backgroundColor: '#400101',
+        borderColor: '#000000',
+        borderRadius: 2
     },
     title: {
         fontSize: 24,
         marginBottom: 20,
+        fontFamily: 'monospace',
+        color: '#A9D9D0'
     },
     buttonContainer: {
-        backgroundColor: '#add8e6', // Cor de fundo do container do botão
+        backgroundColor: '#03A63C',
         margin: 10,
-        width: windowWidth * 0.5, // 50% da largura da tela
+        width: windowWidth *0.5,
+        borderRadius: 7,
+        borderColor: '#000000',
+        color: '000000'
+    },
+    input: {
         borderRadius: 5,
+        borderColor: '#ffffff',
+        backgroundColor: '#8A8C46',
+        borderWidth: 0.5,
+        margin: 3
     },
 });
