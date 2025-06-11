@@ -1,36 +1,53 @@
-
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {View, Text, Button, StyleSheet, Dimensions, TextInput} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function LoginScreen ({navigation}){
         const [usuario, setUsuario] = useState('');
         const [senha, setSenha]= useState('');
-        const Login = () => {
+
+        useEffect(() => {
+            const statusLogin = async () => {
+                try {
+                    const User = await AsyncStorage.getItem('User');
+                    if (usuarioLogin) {
+                        navigation.navigate('Home');
+                    }
+                } catch (error) {
+                    console.error('Erro ao verificar o status de login:', error);
+                }
+            };
+            statusLogin();
+        }, []);
+
+        const Login =async() => {
             if (!usuario || !senha) {
                 alert('Erro. Preencha todos os campos.');
                 return;
             }
         
-            if (usuario !== 'admin@gmail.com') {
-                alert('Erro. Usuário inválido.');
+            if (usuario !== 'usuario@gmail.com') {
+                alert('Erro. Usuário ou senha incorreta.');
                 return;
             }
         
-            if (senha !== '1234') {
-                alert('Erro. Senha incorreta.');
+            if (senha !== '0001') {
+                alert('Erro. Usuário ou senha incorreta.');
                 return;
             }
-
-            if (senha !== '1234' && usuario !=='admin@gmail.com'){
-                alert("Usuário e senha incorretos");
-                return;
+            try {
+                await AsyncStorage.setItem('User', 'LoginSucessful');
+                navigation.navigate('Home');
+            } catch (error) {
+                console.error('Ocorreu um erro', error);
+                alert('Ocorreu um erro ao salvar o login.');
             }
-        
-            navigation.navigate('Home');
+            
         };
+
     return (
     <View style={styles.container}>
         
